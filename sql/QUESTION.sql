@@ -20,5 +20,50 @@ INSERT INTO sqlpractice.department VALUES('1','IT');
 INSERT INTO sqlpractice.department VALUES('2','Sales');
 
 
+create table sqlpractice.seat(
+`id` int,
+`employee` varchar(255)
+);
 
+insert into sqlpractice.seat values(1,'Jack');
+insert into sqlpractice.seat values(2,'Scott');
+insert into sqlpractice.seat values(3,'Emery');
+insert into sqlpractice.seat values(4,'Green');
+insert into sqlpractice.seat values(5,'Linda');
+insert into sqlpractice.seat values(6,'Jane');
 
+CREATE TABLE `Trips` (
+`ID` varchar(255),
+`Client_ID` varchar(255) ,
+`Driver_ID` varchar(255),
+`City_ID` varchar(255) ,
+`Status` varchar(255) ,
+`Request_at` varchar(255)
+) ;
+#插入数据
+INSERT INTO `Trips` VALUES ('1', '1', '10', '1', 'completed', '2019-10-01');
+INSERT INTO `Trips` VALUES ('2', '2', '11', '1', 'cancelled_by_driver', '2019-10-01');
+INSERT INTO `Trips` VALUES ('3', '3', '12', '6', 'completed', '2019-10-01');
+INSERT INTO `Trips` VALUES ('4', '4', '13', '6', 'cancelled_by_driver', '2019-10-01');
+INSERT INTO `Trips` VALUES ('5', '1', '10', '1', 'completed', '2019-10-02');
+INSERT INTO `Trips` VALUES ('6', '2', '11', '6', 'completed', '2019-10-02');
+INSERT INTO `Trips` VALUES ('7', '3', '12', '6', 'completed', '2019-10-02');
+INSERT INTO `Trips` VALUES ('8', '2', '12', '12', 'completed', '2019-10-03');
+INSERT INTO `Trips` VALUES ('9', '3', '10', '12', 'completed', '2019-10-03');
+INSERT INTO `Trips` VALUES ('10', '4', '13', '12', 'cancelled_by_driver',
+'2019-10-03');
+
+CREATE TABLE `Users` (
+`Users_ID` varchar(255) ,
+`Banned` varchar(255) ,
+`Role` varchar(255)
+) ;
+#插入数据
+INSERT INTO `Users` VALUES ('1', 'No', 'client');
+INSERT INTO `Users` VALUES ('2', 'Yes', 'client');
+INSERT INTO `Users` VALUES ('3', 'No', 'client');
+INSERT INTO `Users` VALUES ('4', 'No', 'client');
+INSERT INTO `Users` VALUES ('10', 'No', 'driver');
+INSERT INTO `Users` VALUES ('11', 'No', 'driver');
+INSERT INTO `Users` VALUES ('12', 'No', 'driver');
+INSERT INTO `Users` VALUES ('13', 'No', 'driver');

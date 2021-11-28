@@ -25,4 +25,30 @@ group by departmentID) c
 ON c.departmentId = e.departmentId and c.salary = e.salary
 ```
 
+## 序号调换的问题
+一般可能会用到奇偶数的trick。可以用case when来判断规则
+```sql
+select 
+(case 
+when countId = id and mod(id,2) != 0 then id
+when countId != id and mod(id,2) != 0 then id+1
+when mod(id,2) = 0 then id-1 
+end) id, employee
+from seat, (select count(id) as countId from seat) cs
+order by id;
+```
+
+## 计算取消率
+```sql
+select
+Request_at Day,
+count(*),
+sum(if(status='completed',0,1)),
+round(sum(if(Status='completed',0,1))/count(*) ,2) Cancellation_Rate
+from users u
+left join trips t
+on u.Users_ID = t.Client_ID
+where banned = 'NO' and Request_at between '2019-10-01' and '2019-10-03'
+group by Request_at
+```
 
