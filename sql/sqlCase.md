@@ -52,3 +52,44 @@ where banned = 'NO' and Request_at between '2019-10-01' and '2019-10-03'
 group by Request_at
 ```
 
+## 连续天数问题
+> 该类问题一般用于计算连续打卡，用户留存率等问题当中  
+
+解法一： 
+```sql
+-- 连续join
+select count(distinct t1.shopid)
+from sales_record t1
+left join sales_record t2
+on t1.shopid = t2.shopid
+left join sales_record t3
+on t2.shopid = t3.shopid
+where t1.dt = t2.dt+1 and t2.dt = t3.dt + 1;
+```
+解法二：
+```sql
+-- lead函数
+select count(distinct shopid1) from 
+(SELECT t1.shopid AS shopid1, t1.dt AS dt1, t1.sale AS sale1
+, lead(t1.dt, 1, NULL) OVER (PARTITION BY t1.shopid ORDER BY dt) AS dt2
+, lead(t1.dt, 2, NULL) OVER (PARTITION BY t1.shopid ORDER BY dt) AS dt3
+FROM sales_record t1) t2
+where dt1 = dt2 -1 and dt1 = dt3 - 2
+```
+解法三：
+```sql
+-- 用rawnumber函数进行排序编号，然后再用日期减去编号
+select distinct shopid from
+(
+select * from
+(select *,dt-rn as d from
+(select
+shopid,
+dt,
+sale,
+row_number() OVER (PARTITION BY shopid ORDER BY dt) AS rn
+FROM sales_record) a) b 
+group by shopid, d
+having count(*)>2) c
+```
+

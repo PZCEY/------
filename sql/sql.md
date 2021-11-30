@@ -15,4 +15,18 @@
 
 5. **如何进行condition count**  
    一般采用sum(case when)或者sum(if())  
-s
+
+6. **lead函数**  
+   基本语法： lead(fieldName,1,null) over(partition by fieldName order by fieldName)   
+   常用于求连续问题当中
+
+7. **经纬度距离计算**
+```sql
+select (
+6371 * acos(
+cos(radians(lat1)) * cos(radians(lat2)) * cos(
+radians(lng1) - radians(lng2)
+) + sin(radians(lat1)) * sin(radians(lat2))
+)
+)*1000 as distence
+```
