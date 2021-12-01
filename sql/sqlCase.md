@@ -93,3 +93,33 @@ group by shopid, d
 having count(*)>2) c
 ```
 
+## 留存率
+![avatar](/sql/scene1_tb_str.png)
+
+```sql
+select 
+t1.load_dt,
+count(t1.usr_id),
+count(t2.usr_id),
+count(t3.usr_id),
+count(t4.usr_id),
+count(distinct t2.usr_id)/count(distinct t1.usr_id) as ratio1,
+count(distinct t3.usr_id)/count(distinct t1.usr_id) as ratio2,
+count(distinct t4.usr_id)/count(distinct t1.usr_id) as ratio3
+from
+(select usr_id, min(load_dt) load_dt from
+ td_load_rcd
+ group by usr_id) t1 left join 
+(select load_dt, usr_id from td_load_rcd group by load_dt, usr_id) t2 on
+t1.usr_id = t2.usr_id and 
+t1.load_dt = date_sub(t2.load_dt, interval 1 day) left join
+(select load_dt, usr_id from td_load_rcd group by load_dt, usr_id) t3 on
+t1.usr_id = t3.usr_id and 
+t1.load_dt = date_sub(t3.load_dt, interval 3 day) left join
+(select load_dt, usr_id from td_load_rcd group by load_dt, usr_id) t4 on
+t1.usr_id = t4.usr_id and
+t1.load_dt = date_sub(t4.load_dt, interval 7 day)
+group by t1.load_dt
+
+```
+
