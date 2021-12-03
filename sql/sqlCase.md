@@ -92,6 +92,9 @@ FROM sales_record) a) b
 group by shopid, d
 having count(*)>2) c
 ```
+### 连续登录的变体问题--连续次数
+
+
 
 ## 留存率
 ![avatar](/sql/scene1_tb_str.png)
@@ -123,3 +126,16 @@ group by t1.load_dt
 
 ```
 
+## 计算中位数，平均数和众数
+```sql
+-- 中位数
+select avg(emp_salary)
+from
+(
+select emp_salary,
+row_number() over(order by emp_salary) as rn,
+count(*) over() as n
+from emp_salary
+) t
+where rn in (floor(n/2)+1,if(mod(n,2) = 0,floor(n/2),floor(n/2)+1))
+```

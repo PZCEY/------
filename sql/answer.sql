@@ -86,6 +86,12 @@ select Cust_uid, dt, lead(dt,1,null)over(partition by Cust_uid order by dt) as d
 usr_trx_rcd a left join usr_bas_inf b
 on a.Cust_uid = b.Cust_uid
 where Mch_nm like '%咖啡%' and year(Trx_tm)=2021 and month(Trx_tm) >= 03 and gender = 'F') c)
-where dt = dt1-1 and dt = dt2-2 
+where dt = dt1-1 and dt = dt2-2 ;
+
+select emp_salary, max(cnt) from (
+select emp_salary, count(emp_salary) as cnt  from
+emp_salary
+group by emp_salary)t1;
+
 
 

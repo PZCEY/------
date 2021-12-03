@@ -91,3 +91,14 @@ VALUES ('A', '2017-10-11', 300),
 ('E', '2017-10-14', 600),
 ('E', '2017-10-15', 500),
 ('D', '2017-10-14', 600);
+
+create table emp_salary (emp_name VARCHAR(20),emp_salary varchar(20),from_date
+date,to_date date);
+INSERT INTO `emp_salary`(`emp_name`, `emp_salary`, `from_date`, `to_date`)
+VALUES (1001, 15000, '2020-03-01', '2020-03-31');
+INSERT INTO `emp_salary`(`emp_name`, `emp_salary`, `from_date`, `to_date`)
+VALUES (1002, 12000, '2020-03-01', '2020-03-31');
+INSERT INTO `emp_salary`(`emp_name`, `emp_salary`, `from_date`, `to_date`)
+VALUES (1003, 14000, '2020-03-01', '2020-03-31');
+INSERT INTO `emp_salary`(`emp_name`, `emp_salary`, `from_date`, `to_date`)
+VALUES (1004, 15000, '2020-03-01', '2020-03-31');
