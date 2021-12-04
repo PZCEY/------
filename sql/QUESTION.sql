@@ -102,3 +102,27 @@ INSERT INTO `emp_salary`(`emp_name`, `emp_salary`, `from_date`, `to_date`)
 VALUES (1003, 14000, '2020-03-01', '2020-03-31');
 INSERT INTO `emp_salary`(`emp_name`, `emp_salary`, `from_date`, `to_date`)
 VALUES (1004, 15000, '2020-03-01', '2020-03-31');
+
+
+CREATE TABLE `t` (
+`uid` varchar(255),
+`tdate` varchar(255),
+`is_flag` varchar(255)
+);
+
+INSERT INTO `t` VALUES ('1', '2020-02-01', '1');
+INSERT INTO `t` VALUES ('1', '2020-02-02', '0');
+INSERT INTO `t` VALUES ('1', '2020-02-03', '1');
+INSERT INTO `t` VALUES ('1', '2020-02-04', '1');
+INSERT INTO `t` VALUES ('1', '2020-02-05', '0');
+INSERT INTO `t` VALUES ('1', '2020-02-06', '1');
+INSERT INTO `t` VALUES ('1', '2020-02-07', '1');
+INSERT INTO `t` VALUES ('1', '2020-02-08', '1');
+INSERT INTO `t` VALUES ('2', '2020-02-01', '1');
+INSERT INTO `t` VALUES ('2', '2020-02-02', '0');
+INSERT INTO `t` VALUES ('2', '2020-02-03', '0');
+INSERT INTO `t` VALUES ('2', '2020-02-04', '1');
+INSERT INTO `t` VALUES ('2', '2020-02-05', '1');
+INSERT INTO `t` VALUES ('2', '2020-02-06', '1');
+INSERT INTO `t` VALUES ('2', '2020-02-07', '1');
+INSERT INTO `t` VALUES ('2', '2020-02-08', '1');

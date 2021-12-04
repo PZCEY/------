@@ -94,4 +94,30 @@ emp_salary
 group by emp_salary)t1;
 
 
+select avg(emp_salary) from(
+select emp_salary, row_number()over(order by emp_salary) as rk, count(1)over() as n
+from emp_salary) t1
+where rk = (floor(n/2) + 1) or rk = if(mod(n,2)=0,floor(n/2),floor(n/2) + 1);
+
+select emp_salary, row_number()over(order by emp_salary) as rk, count(1)over() as n
+from emp_salary;
+
+select shopid,count(dt1) as continue_day from (
+select *,date_sub(dt,interval rk day) as dt1 from (
+select *,row_number()over(partition by shopid order by dt) as rk
+from sales_record ) t1) t2
+group by shopid, dt1
+having count(dt1) >= 3;
+
+select uid, max(cd) from(
+select uid,count(diff) as cd from
+(select *, rk1-rk2 as diff from
+(select *,row_number()over(partition by uid order by tdate) as rk1,row_number()over(partition by uid, is_flag order by tdate) as rk2
+from t
+order by uid, tdate) t1) t2
+group by uid, diff) t3
+group by uid;
+
+
+
 

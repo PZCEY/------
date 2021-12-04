@@ -94,6 +94,17 @@ having count(*)>2) c
 ```
 ### 连续登录的变体问题--连续次数
 
+```sql
+--排两次序
+select uid, max(cd) from(
+select uid,count(diff) as cd from
+(select *, rk1-rk2 as diff from
+(select *,row_number()over(partition by uid order by tdate) as rk1,row_number()over(partition by uid, is_flag order by tdate) as rk2
+from t
+order by uid, tdate) t1) t2
+group by uid, diff) t3
+group by uid;
+```
 
 
 ## 留存率
