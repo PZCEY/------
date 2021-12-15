@@ -150,3 +150,52 @@ from emp_salary
 ) t
 where rn in (floor(n/2)+1,if(mod(n,2) = 0,floor(n/2),floor(n/2)+1))
 ```
+
+
+## 计算摊销收入
+![avatar](/sql/bilibili.png)
+```sql
+select sum(dailya) from(
+select *,pay_amount/datediff(end_date,begin_date) as dailya from
+(select * from bilibili_m2 
+where m_date >= '2021-01-01' and m_date < '2021-07-01') t1
+left join bilibili_m1
+on 1
+where m_date >= begin_date and m_date <= end_date) t2
+group by y_m
+```
+
+```sql
+select distinct cust_uid1, mch_nm from 
+(select cust_uid1, cust_uid2, mch_nm as mch_nm1
+from
+(select t1.cust_uid cust_uid1,t2.cust_uid cust_uid2
+from (select distinct cust_uid, mch_nm from mt_trx_rcd ) t1
+left join (select distinct cust_uid, mch_nm from mt_trx_rcd ) t2
+on t1.mch_nm = t2.mch_nm
+where t1.cust_uid !=t2.cust_uid
+group by t1.cust_uid, t2.cust_uid
+having count(1) >= 15) t3
+left join (select distinct cust_uid, mch_nm from mt_trx_rcd ) t4
+on t3.cust_uid1 = t4.cust_uid) t5
+left join
+(select distinct cust_uid, mch_nm from mt_trx_rcd ) t6
+on t5.cust_uid2 = t6.cust_uid
+where mch_nm1 != mch_nm and cust_uid1 = 'MT10010'
+```
+## 计算转化率（conversion rate）
+```sql
+select prd_nm, vw/snd,cart/vw,buy/cart,buy from
+(select prd_id, count(distinct cust_uid) snd from tb_clk_rcd where if_snd = 1 group by prd_id)t1
+left join 
+(select prd_id, count(distinct cust_uid) vw from tb_clk_rcd where if_vw = 1 group by prd_id)t2
+on t1.prd_id = t2.prd_id
+left join
+(select prd_id, count(distinct cust_uid) cart from tb_clk_rcd where if_cart = 1 group by prd_id)t3
+on t2.prd_id  = t3.prd_id
+left join 
+(select prd_id, count(distinct cust_uid) buy from tb_clk_rcd where if_buy = 1 group by prd_id)t4
+on t3.prd_id = t4.prd_id
+left join  tb_prd_map t5
+on t5.prd_id = t4.prd_id
+```

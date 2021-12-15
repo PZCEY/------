@@ -1,3 +1,4 @@
+# 一、数据预处理相关知识
 1. 监督学习，无监督学习，主动学习，半监督学习的区别有哪些  
    >监督学习会给定标注数据，核心思想是学习输入集与输出集的映射。如果输出是连续的，则回归。如果输出是discrete，则为分类。如果输出是有序，则为标注。  
 
@@ -40,4 +41,29 @@
    - 缩小数据的绝对数值  
 
 
-   
+6. 如何做数据转换  
+- transformation for real value  
+![avatar](/machinelearning/normalization.png)
+
+- image transformation
+   - downsampling
+   - cropping  
+- text transformation
+   - stemming and lemmatization（语法纠正）
+   - tokenization(分词)
+
+7. 特征工程  
+   make the input well defined
+   - 数据特征处理
+   ![avatar](/machinelearning/feature.png)
+   - 文本特征处理
+      - bag of words
+      - word embedding
+      - pretrained language models
+   - 图片特征处理
+      - sift
+      - using pre-trained neural networks as fearure extractor
+
+
+
+   # 二、决策树  
