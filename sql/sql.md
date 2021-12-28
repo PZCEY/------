@@ -30,3 +30,10 @@ radians(lng1) - radians(lng2)
 )
 )*1000 as distence
 ```
+
+8. **hive语法**  
+   collect_list与collect_set区别  
+   都可以用于将两行并为一行
+
+9. 窗口函数的其他用法
+    avg(), count(), sum()

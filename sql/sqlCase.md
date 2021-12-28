@@ -199,3 +199,108 @@ on t3.prd_id = t4.prd_id
 left join  tb_prd_map t5
 on t5.prd_id = t4.prd_id
 ```
+
+## 行列转换问题 
+- 多行转多列问题
+```SQL
+/*
+创建数据表
+*/
+insert into sqlpractice.rowColumn values('2014','B','9');
+insert into sqlpractice.rowColumn values('2015','A','8');
+insert into sqlpractice.rowColumn values('2015','B','7');
+insert into sqlpractice.rowColumn values('2014','A','10');
+```
+```sql
+select
+a,
+max(case when b="A" then c end) col_A,
+max(case when b="B" then c end) col_B
+from t1
+group by a
+```
+- 行转列复原
+```sql
+select
+a,
+b,
+c
+from (
+select a,"A" as b,col_a as c from t1_2
+union all
+select a,"B" as b,col_b as c from t1_2
+)tmp
+```
+
+
+## 排名中取他值
+示例表格如下所示：
+|a|b|c|
+|---|---|---|
+|2014| A |3|
+|2014 |B |1|
+|2014| C| 2|
+|2015| A |4|
+|2015| D| 3|
+
+表格创建sql代码如下：
+```sql
+create table sqlpractice.rankData(
+	`a` varchar(255),
+    `b` varchar(255),
+    `c` varchar(255)
+);
+
+insert into sqlpractice.rankData values('2014','A','3');
+insert into sqlpractice.rankData values('2014','B','1');
+insert into sqlpractice.rankData values('2014','C','2');
+insert into sqlpractice.rankData values('2015','A','4');
+insert into sqlpractice.rankData values('2015','D','3');
+```
+1. 按a字段分组，取b最小时的c的值
+```sql
+select * from(
+select *,rank()over(partition by a order by b) as rk
+from sqlpractice.rankData) t1
+where rk = 1
+```
+2. 按a字段分组，取b最小时和最大时的c的值
+```sql
+select a,max(if(rk=1,c,null)) min_c,max(if(desc_rk=1,c,null)) max_c from(
+select *,rank()over(partition by a order by b) as rk,
+rank()over(partition by a order by b desc) as desc_rk
+from sqlpractice.rankData) t1
+where rk = 1 or desc_rk = 1
+group by a
+
+```
+3. 按a分组，取b字段前两大和后两大的c值
+
+```SQL
+-- HIVE版本，用concat_ws 和 collect_list进行合并
+select a,concat_ws(',',collect_set(case when rk=2 then c when rk = 1 then c else null end)) min_c,concat_ws(',',collect_set(case when desc_rk=2 then c when desc_rk = 1 then c else null end ))max_c,rk,desc_rk from(
+select *,rank()over(partition by a order by b) as rk,
+rank()over(partition by a order by b desc) as desc_rk
+from sqlpractice.rankData) t1
+where rk = 2 or desc_rk = 2 or rk = 1 or desc_rk = 1 
+group by a
+```
+
+```sql
+--mysql版本，用group_concat进行合并
+select a,GROUP_CONCAT(case when rk=2 then c when rk = 1 then c else null end) min_c,GROUP_CONCAT(case when desc_rk=2 then c when desc_rk = 1 then c else null end ) max_c from(
+select *,rank()over(partition by a order by b) as rk,
+rank()over(partition by a order by b desc) as desc_rk
+from sqlpractice.rankData) t1
+where rk = 2 or desc_rk = 2 or rk = 1 or desc_rk = 1 
+group by a
+```
+
+# 产生连续数值
+
+```sql
+select row_number()over() as id
+from
+(select split(space(99),' ') x) tmp lateral view explode(x) tmp2
+```
+

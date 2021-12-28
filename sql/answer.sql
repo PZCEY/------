@@ -118,6 +118,18 @@ order by uid, tdate) t1) t2
 group by uid, diff) t3
 group by uid;
 
+create table sqlpractice.rowColumn(
+	`a` varchar(255),
+    `b` varchar(255),
+    `c` varchar(255)
+);
 
+insert into sqlpractice.rowColumn values('2014','B','9');
+insert into sqlpractice.rowColumn values('2015','A','8');
+insert into sqlpractice.rowColumn values('2015','B','7');
+insert into sqlpractice.rowColumn values('2014','A','10');
+
+SELECT a, (case when b = 'A' then c end) FROM
+sqlpractice.rowColumn
 
 
