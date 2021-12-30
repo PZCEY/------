@@ -304,3 +304,4 @@ from
 (select split(space(99),' ') x) tmp lateral view explode(x) tmp2
 ```
 
+# test
