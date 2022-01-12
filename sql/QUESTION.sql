@@ -126,3 +126,48 @@ INSERT INTO `t` VALUES ('2', '2020-02-05', '1');
 INSERT INTO `t` VALUES ('2', '2020-02-06', '1');
 INSERT INTO `t` VALUES ('2', '2020-02-07', '1');
 INSERT INTO `t` VALUES ('2', '2020-02-08', '1');
+
+
+
+create table d_date(
+date_id varchar(255),
+is_work varchar(255)
+);
+
+
+insert into `d_date` values('2017-04-13',' 1');
+insert into `d_date` values('2017-04-14',' 1');
+insert into `d_date` values('2017-04-15',' 0'); 
+insert into `d_date` values('2017-04-16',' 0');
+insert into `d_date` values('2017-04-17',' 1'); 
+
+create table t14(
+a varchar(255),
+b varchar(255),
+c varchar(255)
+);
+insert into `t14` values('1',' 申请','2017-04-14 18:03:00');
+insert into `t14` values('1','通过','2017-04-17 09:43:00');
+insert into `t14` values('2','申请','2017-04-13 17:02:00'); 
+insert into `t14` values('2','通过','2017-04-15 09:42:00');
+
+select a, round(sum(duration),2) from(
+select *,
+case 
+when is_work = 0 and end_date != date_id then 0 
+when is_work = 1 and start_date != date_id and end_date != date_id then 9
+when is_work = 1 and start_date = date_id then (unix_timestamp(time('18:30:00'))-unix_timestamp(start_time))/(60*60)
+when end_date = date_id then (unix_timestamp(end_time)-unix_timestamp(time('09:30:00')))/(60*60)
+end as duration
+from
+(select a, min(c) start, max(c) end, date(min(c)) start_date ,date(max(c)) end_date,time(min(c)) as start_time, time(max(c)) as end_time from
+t14
+group by a) tmp1
+left join 
+d_date
+on 1=1
+where date_id between start_date and end_date
+order by a)tmp2
+group by a;
+
+SELECT (UNIX_TIMESTAMP(time('20:43:00'))-UNIX_TIMESTAMP(time('18:03:00')))/(60*60) AS DiffDate
